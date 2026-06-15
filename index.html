@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online JSON to CSV Converter - Fast & Free</title>
+    <meta name="description" content="Convert JSON data to CSV format instantly. Free online tool for developers and data analysts.">
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; line-height: 1.6; }
+        textarea { width: 100%; height: 200px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>JSON to CSV Converter</h1>
+    <textarea id="jsonInput" placeholder="Paste your JSON here..."></textarea>
+    <button onclick="convert()">Convert to CSV</button>
+    <textarea id="csvOutput" placeholder="CSV output will appear here..." readonly></textarea>
+
+    <script>
+        function convert() {
+            try {
+                const json = JSON.parse(document.getElementById('jsonInput').value);
+                const items = Array.isArray(json) ? json : [json];
+                const replacer = (key, value) => value === null ? '' : value; 
+                const header = Object.keys(items[0]);
+                let csv = items.map(row => header.map(fieldName => JSON.stringify(row[fieldName], replacer)).join(','));
+                csv.unshift(header.join(','));
+                document.getElementById('csvOutput').value = csv.join('\r\n');
+            } catch (e) { alert("Invalid JSON"); }
+        }
+    </script>
+</body>
