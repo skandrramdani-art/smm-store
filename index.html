@@ -2,26 +2,43 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>متجر رشق تلغرام</title>
-    <style>
-        body { font-family: sans-serif; background: #1a1a1a; color: white; text-align: center; padding: 50px; }
-        .box { background: #333; padding: 30px; border-radius: 15px; max-width: 400px; margin: auto; }
-        input, button { width: 100%; padding: 15px; margin: 10px 0; border-radius: 5px; border: none; }
-        button { background: #0088cc; color: white; font-weight: bold; cursor: pointer; }
-    </style>
+    <title>تجربة رشق أعضاء تليجرام</title>
 </head>
-<body>
-    <div class="box">
-        <h1>متجر رشق تلغرام 🚀</h1>
-        <p>ارفع متابعين قناتك بسهولة</p>
-        <input type="text" id="username" placeholder="رابط القناة">
-        <input type="number" id="count" placeholder="العدد المطلوب">
-        <button onclick="startOrder()">بدء الرشق</button>
-    </div>
+<body style="font-family: sans-serif; text-align: center; padding-top: 50px;">
+    <h2>تجربة رشق أعضاء قناة تليجرام</h2>
+    <input type="text" id="channel_url" placeholder="أدخل رابط القناة (https://t.me/...)" style="width: 300px; padding: 8px;">
+    <button onclick="sendOrder()" style="padding: 8px 15px;">إرسال الأعضاء</button>
+    <div id="result" style="margin-top: 20px; font-weight: bold;"></div>
+
     <script>
-        function startOrder() {
-            alert("تم استلام الطلب! سيبدأ النظام بالعمل فور ربط الـ API.");
-        }
+    function sendOrder() {
+        const url = document.getElementById('channel_url').value;
+        const resultDiv = document.getElementById('result');
+        
+        if(!url) { alert('يرجى إدخال الرابط'); return; }
+
+        resultDiv.innerText = "جاري إرسال الطلب...";
+
+        // استبدل الـ URL والـ Key ببيانات سيرفر الرشق الخاص بك
+        fetch('https://EXAMPLE-SMM-PROVIDER.COM/api/v2', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                'key': 'YOUR_API_KEY_HERE',
+                'action': 'add',
+                'service': 101,
+                'link': url,
+                'quantity': 100
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            resultDiv.innerHTML = `<span style="color:green;">تم الإرسال! رقم الطلب: ${data.order || JSON.stringify(data)}</span>`;
+        })
+        .catch(err => {
+            resultDiv.innerHTML = `<span style="color:red;">حدث خطأ أثناء الإرسال</span>`;
+        });
+    }
     </script>
 </body>
 </html>
